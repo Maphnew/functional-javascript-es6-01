@@ -1,0 +1,81 @@
+<h2>일급 함수: First Class</h2>
+<p>함수를 값으로 다룰 수 있다.</p>
+<p>조합성과 추상화의 도구</p>
+
+<script>
+const log = console.log;
+
+const add5 = a => a + 5;
+log(add5);
+log(add5(5))
+
+const f1 = () => () => 1;
+log(f1())
+
+const f2 = f1();
+log(f2);
+log(f2());
+</script>
+
+<h2>고차 함수: higher order function(HOF)</h2>
+<p>하나 이상의 함수를 인자로 받는다.</p>
+<p>함수를 결과로 반환한다.</p>
+<p>고차 함수는 함수의 값을 전달하는 기존 관념을 넘어, 함수의 흐름을 제어하는 파라미터로써 수용한다.이를 제어 패턴 추상화(Abstracting Patterns of Control)라고 부른다.</p>
+
+<!-- 참조 블로그 -->
+<!-- https://medium.com/@la.place/higher-order-function-%EC%9D%B4%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80-1c61e0bea79 -->
+
+<h3>함수를 인자로 받아서 실행하는 함수</h3>
+<p>Applicative Programming</p>
+<p>apply1</p>
+<p>times</p>
+
+<script>
+    // apply1
+    console.clear();
+    const apply1 = f => f(1);
+    const add2 = a => a + 1
+    log(apply1(add2))
+    log(apply1(a => a -1 ))
+
+    // times
+    console.clear();
+    const times = (f,n) => {
+        let i = -1;
+        while ( ++i < n ) f(i);
+    }
+
+    times(log, 3)
+
+    times(a => log(a+10), 3)
+
+</script>
+
+<h3>함수를 만들어 리턴하는 함수 (클로저를 만들어 리턴하는 함수)</h3>
+<p> Closure는 함수와 함수가 선언된 어휘적 환경의 조합이다. 클로저를 이해하려면 자바스크립트가 어떻게 변수의 유효범위를 지정하는지(Lexical scoping)를 먼저 이해해야 한다. </p>
+
+<!-- 참조 페이지 -->
+<!-- https://developer.mozilla.org/ko/docs/Web/JavaScript/Guide/Closures -->
+
+<script>
+function init() {
+    var name = "Mozilla"; // name is a local variable created by init
+    function displayName() { // displayName() is the inner function, a closure
+        alert (name); // displayName() uses variable declared in the parent function    
+    }
+    displayName();    
+}
+init();
+</script>
+
+<p>addMaker</p>
+
+<script>
+    // addMaker
+    console.clear();
+    const addMaker = a => b => a + b
+    const add10 = addMaker(10)
+    log(add10(5))
+    log(add10(10))
+
+</script>
