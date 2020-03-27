@@ -1,0 +1,48 @@
+<script>const log = console.log;</script>
+# 이터러블 프로토콜을 따른 map의 다형성1
+
+<script>
+  const map = (f, iter) => {
+    let res = [];
+    for (const a of iter) {
+      res.push(f(a));
+    }
+    return res;
+  };
+  log([1, 2, 3].map(a => a + 1));
+
+  log(map(el => el.nodeName, document.querySelectorAll('*')));
+
+  // const it = document.querySelectorAll('*')[Symbol.iterator]();
+  // log(it.next());
+  // log(it.next());
+  // log(it.next());
+  // log(it.next());
+  // log(it.next());
+
+  function* gen() {
+    yield 2;
+    if (false) yield 3;
+    yield 4;
+  }
+
+  log(map(a => a * a, gen()));
+
+</script>
+
+# 이터러블 프로토콜을 따른 map의 다형성2
+<script>
+  let m = new Map();
+  m.set('a', 10);
+  m.set('b', 20);
+  const it = m[Symbol.iterator]();
+//   log(Object.keys(it.next().value))
+//   log(Object.values(it.next().value))
+  log(it.next().value)
+  log(it.next().value)
+  log(it.next())
+
+  log(new Map(map(([k, a]) => [k, a * 2], m))); // "a" => 20, "b" => 40
+
+//   console.clear();
+</script>
