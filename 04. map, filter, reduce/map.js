@@ -37,7 +37,17 @@ function* gen() {
 
 log(map( a => a * a, gen() ))
 // [ 4, 16 ]
+
 let m = new Map()
+
+const it = m[Symbol.iterator]()
+log(it.next())
+log(it.next())
+log(it.next())
+// { value: undefined, done: true }
+// { value: undefined, done: true }
+// { value: undefined, done: true }
+
 m.set('a', 10)
 m.set('b', 20)
 log(m)
