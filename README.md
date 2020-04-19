@@ -620,8 +620,71 @@ init();
 ```
 ### 🚀 5. 코드를 값으로 다루어 표현력 높이기
 #### 1. go
+```html
+<script src="../lib/fx.js"></script>
+
+<script>
+  const products = [
+    {name: '반팔티', price: 15000},
+    {name: '긴팔티', price: 20000},
+    {name: '핸드폰케이스', price: 15000},
+    {name: '후드티', price: 30000},
+    {name: '바지', price: 25000}
+  ];
+
+  const add = (a, b) => a + b;
+  log(
+    reduce(
+      add,
+      map(p => p.price,
+        filter(p => p.price < 20000, products))));
+  console.clear();
+</script>
+
+# 코드를 값으로 다루어 표현력 높이기
+
+## go, pipe
+
+<script>
+    const go = (...args) => reduce((a, f) => f(a) , args);
+
+    go(
+        0,
+        a => a + 1,
+        a => a + 10,
+        a => a + 100,
+        log
+    );
+
+</script>
+```
 #### 2. pipe
+```html
+# 코드를 값으로 다루어 표현력 높이기
+
+## go, pipe
+
+<script>
+    const go = (...args) => reduce((a, f) => f(a) , args);
+    const pipe = (f, ...fs) => (...as) => go(f(...as), ...fs);
+    go(
+        add(0,1),
+        a => a + 10,
+        a => a + 100,
+        log
+    );
+    const f = pipe(
+        (a, b)=> a+b,
+        a => a + 10,
+        a => a + 100,
+    )
+
+    log(f(0,1))
+
+</script>
+```
 #### 3. go를 사용하여 읽기 좋은 코드로 만들기
+
 #### 4. go+curry를 사용하여 더 읽기 좋은 코드로 만들기
 #### 5. 함수 조합으로 함수 만들기
 
