@@ -684,8 +684,97 @@ init();
 </script>
 ```
 #### 3. go를 사용하여 읽기 좋은 코드로 만들기
+```html
+<script>
 
+  go(
+    products,
+    products => filter(p => p.price < 20000, products),
+    products => map(p => p.price, products),
+    prices => reduce(add, prices),
+    log
+  )
+  // 30000
+
+</script>
+```
 #### 4. go+curry를 사용하여 더 읽기 좋은 코드로 만들기
+```JS
+// fx.js
+const log = console.log;
+
+const curry = f =>
+  (a, ..._) => _.length ? f(a, ..._) : (..._) => f(a, ..._);
+
+const map = curry((f, iter) => {
+  let res = [];
+  for (const a of iter) {
+    res.push(f(a));
+  }
+  return res;
+});
+
+const filter = curry((f, iter) => {
+  let res = [];
+  for (const a of iter) {
+    if (f(a)) res.push(a);
+  }
+  return res;
+});
+
+const reduce = curry((f, acc, iter) => {
+  if (!iter) {
+    iter = acc[Symbol.iterator]();
+    acc = iter.next().value;
+  }
+  for (const a of iter) {
+    acc = f(acc, a);
+  }
+  return acc;
+});
+
+```
+
+```html
+## curry
+<script>
+
+  go(
+    products,
+    products => filter(p => p.price < 20000, products),
+    products => map(p => p.price, products),
+    prices => reduce(add, prices),
+    log
+  )
+  // 30000
+  go(
+    products,
+    products => filter(p => p.price < 20000)(products),
+    products => map(p => p.price)(products),
+    prices => reduce(add)(prices),
+    log
+  )
+  // currying
+  go(
+    products,
+    filter(p => p.price < 20000),
+    map(p => p.price),
+    reduce(add),
+    log
+  )
+
+</script>
+<script>
+  const mult = curry((a, b) => a * b);
+  log(mult(3)(2))
+
+  const mult3 = mult(3);
+  log(mult3(10)) // 30
+  log(mult3(5)) // 15
+  log(mult3(3)) // 9
+
+</script>
+```
 #### 5. 함수 조합으로 함수 만들기
 
 ### 🚀 6. 장바구니 예제
